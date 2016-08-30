@@ -7,10 +7,7 @@
     },
     "service": {
         "id": "gfw-contribution-data_1.0.0",
-        "name": "GFW Story API"
-    },
-    "mailContribution":{
-        "template":"new-story"
+        "name": "GFW Contribution Data"
     },
     "wriMail": {
         "template": "data-contribution"
