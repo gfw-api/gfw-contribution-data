@@ -29,7 +29,7 @@ class ContributionRouter {
         }
         let template = `${config.get('userMail.template')}-${language}`;
         mailService.sendMail(template, this.request.body, [{
-            address: this.request.body.mail
+            address: this.request.body.data_email
         }]);
 
 
