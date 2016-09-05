@@ -11,6 +11,9 @@
     },
     "wriMail": {
         "template": "data-contribution"
+    },
+    "userMail": {
+        "template": "data-contribution-confirmation"
     }
 
 }
