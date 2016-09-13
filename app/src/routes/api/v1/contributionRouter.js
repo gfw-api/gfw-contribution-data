@@ -40,7 +40,7 @@ class ContributionRouter {
                 json: true
             });
             if(result.statusCode === 200){
-                let user = deserializer(result.body);
+                let user = yield deserializer(result.body);
                 if (user.language) {
                     logger.info('Setting user language to send email');
                     language = user.language.toLowerCase().replace(/_/g, '-');
