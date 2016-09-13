@@ -33,7 +33,7 @@ class ContributionRouter {
         // send mail to USER
         let language = 'en';
         if (this.request.body.loggedUser) {
-            logger.info('Obtaining user');
+            logger.info('Obtaining user', '/user/' + this.request.body.loggedUser.id);
             let result = yield require('vizz.microservice-client').requestToMicroservice({
                 uri: '/user/' + this.request.body.loggedUser.id,
                 method: 'GET',
@@ -45,6 +45,9 @@ class ContributionRouter {
                     logger.debug('Setting user language to send email');
                     language = user.language.toLowerCase().replace(/_/g, '-');
                 }
+            } else {
+                logger.error('error obtaining user', result.body);
+
             }
 
         }
