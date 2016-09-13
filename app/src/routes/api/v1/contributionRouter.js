@@ -4,9 +4,17 @@ var Router = require('koa-router');
 var logger = require('logger');
 var mailService = require('services/mailService');
 var config = require('config');
+var JSONAPIDeserializer = require('jsonapi-serializer').Deserializer;
 var router = new Router({
     prefix: '/contribution-data'
 });
+
+var deserializer = function(obj) {
+    return function(callback) {
+        new JSONAPIDeserializer({keyForAttribute: 'camelCase'}).deserialize(obj, callback);
+    };
+};
+
 
 class ContributionRouter {
     static * createStory() {
@@ -24,8 +32,21 @@ class ContributionRouter {
 
         // send mail to USER
         let language = 'en';
-        if (this.request.body.loggedUser && this.request.body.loggedUser.language) {
-            language = this.request.body.loggedUser.language.toLowerCase().replace(/_/g, '-');
+        if (this.request.body.loggedUser) {
+            logger.info('Obtaining user');
+            let result = yield require('vizz.microservice-client').requestToMicroservice({
+                uri: '/user/' + this.request.body.loggedUser.id,
+                method: 'GET',
+                json: true
+            });
+            if(result.statusCode === 200){
+                let user = deserializer(result.body);
+                if (user.language) {
+                    logger.debug('Setting user language to send email');
+                    language = user.language.toLowerCase().replace(/_/g, '-');
+                }
+            }
+
         }
         let template = `${config.get('userMail.template')}-${language}`;
         mailService.sendMail(template, this.request.body, [{
