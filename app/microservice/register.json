@@ -3,7 +3,7 @@
     "name": "#(service.name)",
     "tags": ["gfw"],
     "urls": [{
-        "url": "/contribution-data",
+        "url": "/v1/contribution-data",
         "method": "POST",
         "endpoints": [{
             "method": "POST",
