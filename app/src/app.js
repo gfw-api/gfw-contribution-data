@@ -51,7 +51,7 @@ var server = require('http').Server(app.callback());
 var port = process.env.PORT || config.get('service.port');
 
 server.listen(port, function() {
-    var p = require('vizz.microservice-client').register({
+    require('vizz.microservice-client').register({
         id: config.get('service.id'),
         name: config.get('service.name'),
         dirConfig: path.join(__dirname, '../microservice'),
@@ -59,10 +59,7 @@ server.listen(port, function() {
         logger: logger,
         app: app
     });
-    p.then(function() {}, function(err) {
-        logger.error(err);
-        process.exit(1);
-    });
+
 });
 
 logger.info('Server started in port:' + port);
